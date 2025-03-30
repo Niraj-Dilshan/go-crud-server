@@ -34,3 +34,6 @@ dist/
 # Local environment variables
 .env
 .env.local
+
+# temp files
+tmp/
