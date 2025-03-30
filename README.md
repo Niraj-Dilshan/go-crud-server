@@ -9,7 +9,8 @@ A RESTful API server built with Go, Gin, and GORM that provides CRUD operations 
 ├── .env.example        # Example environment variables
 ├── .env                # Environment variables for development
 ├── .test.env           # Environment variables for testing
-├── .air.toml           # Configuration for Air (live reloading)
+├── .air.toml           # Configuration for Air (live reloading) for Windows
+├── .air.linux.toml     # Configuration for Air (live reloading) for Linux
 ├── go.mod              # Go module dependencies
 ├── go.sum              # Go module checksum
 ├── Dockerfile          # Docker configuration for building the application
@@ -78,8 +79,15 @@ A RESTful API server built with Go, Gin, and GORM that provides CRUD operations 
    ```
 
 2. Run the application with Air:
+   
+   **For Windows:**
    ```bash
    air
+   ```
+   
+   **For Linux:**
+   ```bash
+   air -c .air.linux.toml
    ```
 
 #### Option 3: Using Docker Compose
@@ -123,6 +131,12 @@ go test ./...
 
 Build the executable binary:
 
+**For Windows:**
+```bash
+go build -o app.exe cmd/main.go
+```
+
+**For Linux:**
 ```bash
 go build -o app cmd/main.go
 ```
