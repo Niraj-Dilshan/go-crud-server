@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    container_name: crud-server
+    ports:
+      - "8888:8888"
+    depends_on:
+      - db
+    environment:
+      - DATABASE_HOST=db
+      - DATABASE_PORT=5432
+      - DATABASE_USERNAME=postgres
+      - DATABASE_PASSWORD=postgres
+      - DATABASE_NAME=taskdb
+    volumes:
+      - ./.env:/app/.env
+    restart: unless-stopped
+
+  db:
+    image: postgres:14-alpine
+    container_name: crud-db
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=taskdb
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./.extra/setup:/docker-entrypoint-initdb.d
+    restart: unless-stopped
+
+volumes:
+  postgres_data: 
