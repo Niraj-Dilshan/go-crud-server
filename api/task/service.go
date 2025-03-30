@@ -83,10 +83,25 @@ func (s *Service) Update(req dto.UpdateTaskRequest) error {
 		return err
 	}
 
-	result := s.db.Model(&model.Task{}).Where("id = ?", req.Id).Updates(map[string]interface{}{
-		"name":        req.Name,
-		"description": req.Description,
-	})
+	// Create a map with only fields that were provided
+	updates := map[string]interface{}{}
+
+	// Only update name if it was provided (non-empty)
+	if req.Name != "" {
+		updates["name"] = req.Name
+	}
+
+	// Only update description if it was provided (non-empty)
+	if req.Description != "" {
+		updates["description"] = req.Description
+	}
+
+	// If no fields to update, return early
+	if len(updates) == 0 {
+		return nil
+	}
+
+	result := s.db.Model(&model.Task{}).Where("id = ?", req.Id).Updates(updates)
 
 	if result.RowsAffected == 0 {
 		return ErrTaskNotFound
