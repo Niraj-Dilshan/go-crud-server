@@ -23,6 +23,14 @@ func NewServer(config *config.Config) *Server {
 
 	// Configure CORS, middleware, etc. here
 
+	// Add health check endpoint
+	router.GET("/", func(c *gin.Context) {
+		c.JSON(http.StatusOK, gin.H{
+			"status":  "healthy",
+			"message": "API is up and running",
+		})
+	})
+
 	return &Server{
 		config: config,
 		router: router,
